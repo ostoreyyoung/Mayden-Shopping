@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
-import { ShoppingListitem } from 'resources/js/models/shoppingListItem';
+import { ShoppingListitem } from '../../models/shoppingListItem';
 import { v4 as uuidv4 } from 'uuid';
+import { isValidPrice } from '../../utils/validation';
 
 interface AddNewItemProps {
 	onAddNewItem: (newItem: ShoppingListitem) => void;
@@ -11,10 +12,16 @@ function AddNewItem({ onAddNewItem }: AddNewItemProps) {
 		Pick<ShoppingListitem, 'name' | 'price'>
 	>({ name: '', price: 0 });
 
+	const isPriceValidated = isValidPrice(String(formFields.price));
+	const isNameValidated = formFields.name.length >= 1;
+
+	const isValidForm = isPriceValidated && isNameValidated;
+
 	const handleFormInputChange =
 		(key: keyof typeof formFields) =>
 		(event: ChangeEvent<HTMLInputElement>) => {
 			const newValue = event.target.value;
+
 			setFormFields((prevFields) => ({ ...prevFields, [key]: newValue }));
 		};
 
@@ -42,13 +49,23 @@ function AddNewItem({ onAddNewItem }: AddNewItemProps) {
 				<div>
 					<span>Item Price: </span>
 					<input
+						type="number"
+						inputMode="decimal"
 						value={formFields.price}
 						onChange={handleFormInputChange('price')}
 					/>
 				</div>
-
-				<button onClick={handleSubmit}>Add Item</button>
+				<button disabled={!isValidForm} onClick={handleSubmit}>
+					Add Item
+				</button>
 			</div>
+
+			{!isNameValidated && (
+				<div className="text-red-500">Please enter a valid Name</div>
+			)}
+			{!isPriceValidated && (
+				<div className="text-red-500">Please enter a valid price</div>
+			)}
 		</div>
 	);
 }
