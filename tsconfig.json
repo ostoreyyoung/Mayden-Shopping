@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "rootDir": "./resources/js",
+        "outDir": "./build",
+        "esModuleInterop": true,
+        "jsx": "react-jsx",
+        "target": "ESNext",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "baseUrl": ".",
+    },
+    "include": ["./resources/js/**/*"],
+    "exclude": ["build"]
+}
