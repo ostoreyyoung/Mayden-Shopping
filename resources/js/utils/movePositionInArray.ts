@@ -1,7 +1,9 @@
+import { Direction } from '../common';
+
 export function movePositionInArray<T>(
 	array: Array<T>,
 	elementIndex: number,
-	direction: 'up' | 'down'
+	direction: Direction
 ): Array<T> {
 	// Exit early for empty array or index issues.
 	if (!array.length || elementIndex < 0 || elementIndex > array.length - 1) {
@@ -10,8 +12,8 @@ export function movePositionInArray<T>(
 
 	// Exit early when trying to move an item at either end, further out.
 	if (
-		(elementIndex === array.length - 1 && direction === 'down') ||
-		(elementIndex === 0 && direction === 'up')
+		(elementIndex === array.length - 1 && direction === Direction.down) ||
+		(elementIndex === 0 && direction === Direction.up)
 	) {
 		return array;
 	}
@@ -30,7 +32,8 @@ export function movePositionInArray<T>(
 	// Remove the element from the array
 	newArray.splice(elementIndex, 1);
 
-	const newIndex = direction === 'up' ? elementIndex - 1 : elementIndex + 1;
+	const newIndex =
+		direction === Direction.up ? elementIndex - 1 : elementIndex + 1;
 
 	// Insert it at the new position.
 	newArray.splice(newIndex, 0, element);
@@ -43,7 +46,7 @@ export function IncrementPosition<T>(
 	array: Array<T>,
 	elementIndex: number
 ): Array<T> {
-	return movePositionInArray(array, elementIndex, 'up');
+	return movePositionInArray(array, elementIndex, Direction.up);
 }
 
 // Wrapper for decrementing
@@ -51,5 +54,5 @@ export function DecrementPosition<T>(
 	array: Array<T>,
 	elementIndex: number
 ): Array<T> {
-	return movePositionInArray(array, elementIndex, 'down');
+	return movePositionInArray(array, elementIndex, Direction.down);
 }

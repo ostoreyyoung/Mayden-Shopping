@@ -1,11 +1,13 @@
 import classNames from 'classnames';
 import { ShoppingListitem } from '../../models/shoppingListItem';
+import DirectionButtons from '../../common/directionButtons/DirectionButtons';
+import { Direction } from '../../common';
 
 interface ShoppingListItemProps {
 	shoppingListItem: ShoppingListitem;
 	onDeleteItem: (id: string | number) => void;
 	onCompleteItem: (id: string | number) => void;
-	onChangePosition: (id: string | number, direction: 'up' | 'down') => void;
+	onChangePosition: (id: string | number, direction: Direction) => void;
 	index: number;
 }
 
@@ -16,6 +18,8 @@ function ShoppingListItem({
 	onCompleteItem,
 	onChangePosition,
 }: ShoppingListItemProps) {
+	const normalisedIndex = index + 1;
+
 	const handleCompleteItem = () => {
 		onCompleteItem(shoppingListItem.id);
 	};
@@ -24,27 +28,17 @@ function ShoppingListItem({
 		onDeleteItem(shoppingListItem.id);
 	};
 
-	const handleChangePosition = (direction: 'up' | 'down') => () =>
+	const handleChangePosition = (direction: Direction) => () =>
 		onChangePosition(shoppingListItem.id, direction);
 
 	return (
 		<tr className="bg-gray-200">
 			<td className="p-2 items-center flex justify-between">
-				<div>{index + 1}</div>
-				<div>
-					<div
-						className="cursor-pointer hover:text-green-700"
-						onClick={handleChangePosition('up')}
-					>
-						▲
-					</div>
-					<div
-						className="cursor-pointer hover:text-red-700"
-						onClick={handleChangePosition('down')}
-					>
-						▼
-					</div>
-				</div>
+				<div>{normalisedIndex}</div>
+				<DirectionButtons
+					onDownClick={handleChangePosition(Direction.down)}
+					onUpClick={handleChangePosition(Direction.up)}
+				/>
 			</td>
 			<td
 				className={classNames('p-2', {

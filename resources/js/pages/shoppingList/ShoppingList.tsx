@@ -6,6 +6,7 @@ import {
 	IncrementPosition,
 } from '../../utils/movePositionInArray';
 import useShoppingList from '../../hooks/useShoppingList';
+import { Direction } from '../../../js/common';
 
 function ShoppingList() {
 	const { updateShoppingList, shoppingList } = useShoppingList();
@@ -36,10 +37,7 @@ function ShoppingList() {
 			return newItems;
 		});
 
-	const handleSetItemPosition = (
-		id: string | number,
-		direction: 'up' | 'down'
-	) => {
+	const handleSetItemPosition = (id: string | number, direction: Direction) => {
 		updateShoppingList((prevList) => {
 			const oldItemIndex = prevList.findIndex((item) => item.id === id);
 
@@ -48,45 +46,51 @@ function ShoppingList() {
 			}
 
 			const directionFunction =
-				direction === 'up' ? IncrementPosition : DecrementPosition;
+				direction === Direction.up ? IncrementPosition : DecrementPosition;
 
 			return directionFunction(prevList, oldItemIndex);
 		});
 	};
 
 	return (
-		<div className="p-10 border rounded shadow w-full h-full flex min-h-0 flex-col gap-y-4">
-			<h1 className="m-0">Shopping List</h1>
-			<AddNewItem onAddNewItem={handleAddNewItem} />
-			<div>Total: £{listTotalPrice}</div>
-			<table>
-				<thead className="table-auto">
-					<tr>
-						<th className="p-2 w-10 text-left">#</th>
-						<th className="p-2 w-40 text-left">Price</th>
-						<th className="p-2 text-left">Name</th>
-						<th className="p-2 w-28">Collected</th>
-						<th className="p-2 w-28">Delete</th>
-					</tr>
-				</thead>
-				<tbody>
-					{shoppingList.map((shoppingListItem, index) => (
-						<ShoppingListItem
-							onDeleteItem={handleDeleteItem}
-							onCompleteItem={handleSetItemCompleted}
-							onChangePosition={handleSetItemPosition}
-							key={shoppingListItem.id}
-							shoppingListItem={shoppingListItem}
-							index={index}
-						/>
-					))}
-				</tbody>
-			</table>
-			{!shoppingList.length && (
-				<div className="w-full text-center italic text-lg">
-					There are currently no items on the shopping list.
+		<div className="border rounded shadow w-full h-full flex min-h-0 flex-col gap-y-4">
+			<div className="p-4 h-full flex flex-col min-h-0">
+				<div className="flex flex-col gap-y-4">
+					<h1 className="m-0">Shopping List</h1>
+					<AddNewItem onAddNewItem={handleAddNewItem} />
+					<div className="mb-2 font-bold">Total: £{listTotalPrice}</div>
 				</div>
-			)}
+				<div className="w-full min-h-0 overflow-y-scroll">
+					<table className="w-full">
+						<thead className="table-auto">
+							<tr>
+								<th className="p-2 w-10 text-left">#</th>
+								<th className="p-2 w-40 text-left">Price</th>
+								<th className="p-2 text-left">Name</th>
+								<th className="p-2 w-28">Collected</th>
+								<th className="p-2 w-28">Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							{shoppingList.map((shoppingListItem, index) => (
+								<ShoppingListItem
+									onDeleteItem={handleDeleteItem}
+									onCompleteItem={handleSetItemCompleted}
+									onChangePosition={handleSetItemPosition}
+									key={shoppingListItem.id}
+									shoppingListItem={shoppingListItem}
+									index={index}
+								/>
+							))}
+						</tbody>
+					</table>
+				</div>
+				{!shoppingList.length && (
+					<div className="w-full text-center italic text-lg">
+						There are currently no items on the shopping list.
+					</div>
+				)}
+			</div>
 		</div>
 	);
 }

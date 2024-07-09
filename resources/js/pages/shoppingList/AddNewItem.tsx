@@ -60,12 +60,19 @@ function AddNewItem({ onAddNewItem }: AddNewItemProps) {
 				</button>
 			</div>
 
-			{!isNameValidated && (
-				<div className="text-red-500">Please enter a valid Name</div>
-			)}
-			{!isPriceValidated && (
-				<div className="text-red-500">Please enter a valid price</div>
-			)}
+			<div className="h-10">
+				{!isNameValidated && (
+					// TODO: Upgrade validation to ZOD
+					<div className="text-red-500">
+						Please enter a name with atleast one character
+					</div>
+				)}
+				{!isPriceValidated && (
+					<div className="text-red-500">
+						Please enter a valid price, integer or decimal to two places.
+					</div>
+				)}
+			</div>
 		</div>
 	);
 }

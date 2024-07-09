@@ -4,6 +4,10 @@ const SHOPPING_LIST_KEY = 'shoppingList';
 
 export function saveShoppingList(shoppingListToSave: ShoppingList): void {
 	try {
+		const valueTosave = JSON.stringify(shoppingListToSave);
+		if (!valueTosave) {
+			throw new Error('Item could not be saved.');
+		}
 		localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(shoppingListToSave));
 	} catch (e: unknown) {
 		console.warn('Unable to save shopping list.');
